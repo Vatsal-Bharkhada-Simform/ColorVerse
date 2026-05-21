@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type UIEventHandler } from "react";
+import { useEffect, useRef, useState, type ReactElement, type UIEventHandler } from "react";
 import ColorBlock from "../components/ColorBlock";
 import { generateHex } from "../utils/generateHex";
 import { useNavigate } from "react-router";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 export default function Content(){
     const navigate = useNavigate();
     
-    const [blocks, setBlocks] = useState([]);
+    const [blocks, setBlocks] = useState<ReactElement[]>([]);
     const [renderCount, setRenderCount] = useState(0);
     const renderRef = useRef(false);
     
@@ -17,7 +17,7 @@ export default function Content(){
     
     useEffect(() => {
         function renderBlocks(){
-            const tempBlocks = [];
+            const tempBlocks: ReactElement[] = [];
             for(let i = 0 ; i < blockCount ; i++){
                 const hexCode = generateHex();
                 tempBlocks.push(<ColorBlock key={((renderCount*blockCount)+i+Date.now().toString())} hex={hexCode} clickHandler = {() => navigate(`/palette/${hexCode}`)} />);
