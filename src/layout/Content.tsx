@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEventHandler, type ReactElement, type UIEventHandler } from "react";
+import { useEffect, useState, type MouseEvent, type ReactElement, type UIEvent } from "react";
 import ColorBlock from "../components/ColorBlock";
 import { generateHex } from "../utils/generateHex";
 import { useNavigate } from "react-router";
@@ -10,7 +10,7 @@ type ToolTipInfo = {
     x: number,
     y: number,
     belowElement: HTMLElement | null,
-    hex: string
+    hex: string | null
 }
 
 export default function Content(){
@@ -50,7 +50,7 @@ export default function Content(){
     }, [renderCount, blockCount, navigate]);
 
     // Handler to manage infinite scrolling
-    const handleScroll:UIEventHandler<HTMLElement> = (e) => {
+    const handleScroll = (e: UIEvent) => {
         const element = e.currentTarget;
 
         // If the scrolled content exceeds a calculated threshold, add new blocks
@@ -59,7 +59,7 @@ export default function Content(){
         }
     }
 
-    const handleMouseMove: MouseEventHandler = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
         const element: HTMLElement | null = e.target as HTMLElement;
         if(element === tooltipInfo.belowElement) return;
         setTooltipInfo({
@@ -72,7 +72,7 @@ export default function Content(){
     
     return (
         <main className="content__grid" onScroll={throttle(handleScroll, 300)} onMouseMove={debounce(handleMouseMove, 50)}>
-            {(tooltipInfo.x !== -1 && tooltipInfo.y !== -1) ? <PreviewTooltip {...tooltipInfo} /> : null}
+            {(tooltipInfo.x !== -1 && tooltipInfo.y !== -1) ? <PreviewTooltip x={tooltipInfo.x} y={tooltipInfo.y} hex={tooltipInfo.hex || ""} /> : null}
             {blocks}
         </main>
     )
